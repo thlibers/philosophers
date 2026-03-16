@@ -1,0 +1,82 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/01/12 11:04:15 by nclavel           #+#    #+#              #
+#    Updated: 2026/03/16 13:22:07 by thlibers         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Name
+NAME = philo
+
+# Flags
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g3 -I.
+INCLUDES = -I./includes
+
+# Paths
+SRC_DIR = sources
+OBJ_DIR = obj
+LIBFT_DIR = mylibft
+
+LIBFT = $(LIBFT_DIR)/libft.a
+
+# Srcs
+SRCS =	$(SRC_DIR).c\
+
+# Obj
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+GREEN = \e[0;32m
+RED = \e[0;31m
+BLUE = \e[0;34m
+RESET = \e[0m
+
+all: $(NAME)
+
+# Compilation program
+$(NAME): $(LIBFT) $(OBJS)
+	@echo "$(BLUE)Linking $(NAME)...$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(RESET)"
+
+# Compilation files obj
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	@echo "$(BLUE)Compiling $<...$(RESET)"
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Compilation mylibft
+$(LIBFT):
+	@echo "$(BLUE)Compiling libft...$(RESET)"
+	@make -C $(LIBFT_DIR)
+	@echo "$(GREEN)✓ libft compiled!$(RESET)"
+
+# Clean obj files
+clean:
+	@echo "$(RED)Cleaning object files...$(RESET)"
+	@rm -rf $(OBJ_DIR)
+	@make -C $(LIBFT_DIR) clean
+	@echo "$(GREEN)✓ Object files cleaned!$(RESET)"
+
+# Complete clean
+fclean: clean
+	@echo "$(RED)Cleaning executables...$(RESET)"
+	@rm -f $(NAME)
+	@make -C $(LIBFT_DIR) fclean
+	@echo "$(GREEN)✓ Full clean completed!$(RESET)"
+
+# Complete recompilation
+re: fclean all
+
+# Leaks
+valgrind: $(NAME)
+	@echo "$(BLUE)Checking for memory leaks with valgrind...$(RESET)"
+	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+
+# Rule .PHONY
+.PHONY: all clean fclean re test leaks valgrind
