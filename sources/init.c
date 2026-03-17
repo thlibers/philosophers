@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:40 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/16 14:49:47 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:15:36 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static bool	init_forks(t_table *table)
 	i = 0;
 	while (i < table->nb_philos)
 	{
-		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
+		if (pthread_mutex_init(&table->forks[i], NULL))
 		{
 			destroy_forks(table->forks, i);
 			return (false);
@@ -65,7 +65,7 @@ static void	init_philos(t_table *table)
 	int	i;
 
 	i = 0;
-	while (i < table->nb_meals)
+	while (i < table->nb_philos)
 	{
 		table->philos[i].id = i + 1;
         table->philos[i].meals_eaten = 0;
@@ -84,9 +84,9 @@ bool	init_table(t_table *table)
 	table->philos = malloc(sizeof(t_philo) * table->nb_philos);
 	if (!table->forks || !table->philos)
         return (false);
-    if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
+    if (pthread_mutex_init(&table->print_mutex, NULL))
         return (false);
-    if (pthread_mutex_init(&table->death_mutex, NULL) != 0)
+    if (pthread_mutex_init(&table->death_mutex, NULL))
     {
         pthread_mutex_destroy(&table->print_mutex);
         return (false);

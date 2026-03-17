@@ -6,8 +6,9 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:44 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/16 13:35:37 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:21:40 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philosophers.h"
+

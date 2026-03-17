@@ -6,8 +6,28 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:37 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/16 13:35:26 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:13:05 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philosophers.h"
+
+void	ft_take_fork()
+{
+	
+}
+
+void	ft_eat()
+{
+	
+}
+
+void	ft_sleep()
+{
+	
+}
+
+void	ft_think()
+{
+	
+}

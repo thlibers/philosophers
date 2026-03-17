@@ -28,6 +28,7 @@ Thread séparé qui vérifie en continu :
 Si un philo n'a pas mangé depuis time_to_die ms → mort
 Si tous les philos ont mangé nb_meals fois → fin
 Utiliser death_mutex pour éviter les data races
+
 Étape 6 — Fonctions utilitaires
 Fonction	Rôle
 get_time()	Retourne le temps en ms (gettimeofday)

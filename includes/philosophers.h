@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 21:45:44 by nclavel           #+#    #+#             */
-/*   Updated: 2026/03/16 14:52:13 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/17 17:04:06 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <limits.h>
-
-/* ========== parsing.c ========== */
-bool	parse(int ac, char **av, long *arg);
-
-/* ========== init.c ========== */
-bool	init_table(t_table *table);
-
-/* ========== destroy.c ========== */
-void	destroy_table(t_table *table);
-
-/* ========== actions.c ========== */
-
-/* ========== routine.c ========== */
-
-/* ========== monitor.c ========== */
-
-/* ========== utils.c ========== */
 
 typedef struct s_table	t_table;
 
@@ -66,17 +49,22 @@ typedef struct s_table
 	t_philo				*philos;
 }						t_table;
 
-# include "mylibft/libft.h"
-# include <ctype.h>
-# include <errno.h>
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <unistd.h>
+/* ========== parsing.c ========== */
+bool	parse(int ac, char **av, long *arg);
+
+/* ========== init.c ========== */
+bool	init_table(t_table *table);
+
+/* ========== destroy.c ========== */
+void	destroy_table(t_table *table);
+
+/* ========== actions.c ========== */
+
+/* ========== routine.c ========== */
+
+/* ========== monitor.c ========== */
+
+/* ========== utils.c ========== */
+long	ft_atol(const char *nptr);
 
 #endif

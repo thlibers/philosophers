@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:47 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/16 14:57:14 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/17 15:17:19 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	parse(int ac, char **av, long *args)
 		return (false);
 	while (i < ac - 1)
 	{
-		if (!(args[i] < '0' || args[i] > INT_MAX))
+		if (!(args[i] < 0 || args[i] > INT_MAX))
 			return (false);
 		i++;
 	}
