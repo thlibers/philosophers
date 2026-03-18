@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 21:45:44 by nclavel           #+#    #+#             */
-/*   Updated: 2026/03/17 17:04:06 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/18 13:21:41 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,16 @@ typedef struct s_philo
 typedef struct s_table
 {
 	int					nb_philos;
+	long				start_time;
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
 	int 				nb_meals; // -1 si non défini
-	bool				is_dead;
-	long				start_time;
+	bool				*is_dead;
+	bool				*shut_up;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t		print_mutex;
-	pthread_mutex_t		death_mutex;
+	pthread_mutex_t		*print_mutex;
+	pthread_mutex_t		*death_mutex;
 	t_philo				*philos;
 }						t_table;
 
