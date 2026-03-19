@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 21:45:44 by nclavel           #+#    #+#             */
-/*   Updated: 2026/03/18 13:21:41 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/19 12:38:15 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_table
 	long				time_to_eat;
 	long				time_to_sleep;
 	int 				nb_meals; // -1 si non défini
-	bool				*is_dead;
+	bool				is_dead;
 	bool				*shut_up;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		*print_mutex;
@@ -64,8 +64,12 @@ void	destroy_table(t_table *table);
 /* ========== routine.c ========== */
 
 /* ========== monitor.c ========== */
+void	*monitor_routine(void *arg);
 
 /* ========== utils.c ========== */
 long	ft_atol(const char *nptr);
+void	safe_print(t_table *table, char *str, int nb);
+int		get_mstime(void);
+bool	check_die(t_table *table);
 
 #endif
