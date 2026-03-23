@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:53 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/19 12:38:59 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:55:07 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,33 +31,65 @@ long	ft_atol(const char *nptr)
 
 void	safe_print(t_table *table, char *str, int nb)
 {
-	int	elapsed;
+	long	elapsed;
 	
 	pthread_mutex_lock(table->print_mutex);
-	if (*table->shut_up)
+	if (table->shut_up)
 	{
 		pthread_mutex_unlock(table->print_mutex);
 		return ;
 	}
 	elapsed = get_mstime() - table->start_time;
-	printf("%d %d %s\n", elapsed, table->philos->id, str);
+	printf("%ld %d %s\n", elapsed, nb, str);
 	pthread_mutex_unlock(table->print_mutex);
 }
 
-int	get_mstime(void)
+long	get_mstime(void)
 {
 	struct timeval	time;
-	int				ms;
+	long			ms;
 
 	gettimeofday(&time, NULL);
-	ms = (int)(time.tv_sec * 1000 + time.tv_usec / 1000);
+	ms = (time.tv_sec * 1000 + time.tv_usec / 1000);
 	return (ms);
 }
 
 bool	check_die(t_table *table)
 {
 	pthread_mutex_lock(table->death_mutex);
-	if (table->is_dead)
+	if (table->is_dead == true)
 		return (pthread_mutex_unlock(table->death_mutex), true);
 	return (pthread_mutex_unlock(table->death_mutex), false);
+}
+
+bool	check_done(t_philo *philo)
+{
+	pthread_mutex_lock(philo->table->shutup_mutex);
+	if (philo->table->shut_up == true)
+	{
+		pthread_mutex_unlock(philo->table->shutup_mutex);
+		return (true);
+	}
+	pthread_mutex_unlock(philo->table->shutup_mutex);
+	return (false);
+}
+
+void	better_usleep(long duration_ms, t_philo *philo)
+{
+	long	start;
+	long	remaining;
+
+	start = get_mstime();
+	while (1)
+	{
+		if (check_done(philo) == true)
+			return ;
+		remaining = duration_ms - (get_mstime() - start);
+		if (remaining <= 0)
+			break ;
+		if (remaining > 1)
+			usleep(500);
+		else
+			usleep(100);
+	}
 }

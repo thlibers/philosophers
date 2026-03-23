@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:47 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/19 13:07:52 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/19 15:37:51 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,22 @@ static long	*check_args(int ac, char **av)
 bool	parse(int ac, char **av, long *args)
 {
 	int	i;
+	long	*tmp;
 
 	i = 0;
-	args = check_args(ac, av);
-	if (!args)
+	tmp = check_args(ac, av);
+	if (!tmp)
 		return (false);
 	while (i < ac - 1)
 	{
-		if (!(args[i] > 0 || args[i] < INT_MAX))
+		if (!(tmp[i] > 0 && tmp[i] < INT_MAX))
+		{
+			free(tmp);
 			return (false);
+		}
+		args[i] = tmp[i];
 		i++;
 	}
+	free(tmp);
 	return (true);
 }

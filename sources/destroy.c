@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:49:28 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/16 14:49:51 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/23 13:11:36 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ void	destroy_table(t_table *table)
         pthread_mutex_destroy(&table->forks[i]);
         i++;
     }
-    pthread_mutex_destroy(&table->print_mutex);
-    pthread_mutex_destroy(&table->death_mutex);
+    pthread_mutex_destroy(table->print_mutex);
+    pthread_mutex_destroy(table->death_mutex);
     free(table->forks);
     free(table->philos);
+    free(table->print_mutex);
+    free(table->death_mutex);
 }

@@ -9,12 +9,16 @@ INCLUDES = -I./includes
 # Paths
 SRC_DIR = sources
 OBJ_DIR = obj
-LIBFT_DIR = mylibft
-
-LIBFT = $(LIBFT_DIR)/libft.a
 
 # Srcs
-SRCS =	$(SRC_DIR).c\
+SRCS =	$(SRC_DIR)/actions.c\
+		$(SRC_DIR)/destroy.c\
+		$(SRC_DIR)/init.c\
+		$(SRC_DIR)/main.c\
+		$(SRC_DIR)/monitor.c\
+		$(SRC_DIR)/parsing.c\
+		$(SRC_DIR)/routine.c\
+		$(SRC_DIR)/utils.c\
 
 # Obj
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -27,9 +31,9 @@ RESET = \e[0m
 all: $(NAME)
 
 # Compilation program
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(OBJS)
 	@echo "$(BLUE)Linking $(NAME)...$(RESET)"
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lreadline
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(RESET)"
 
 # Compilation files obj
@@ -38,24 +42,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo "$(BLUE)Compiling $<...$(RESET)"
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# Compilation mylibft
-$(LIBFT):
-	@echo "$(BLUE)Compiling libft...$(RESET)"
-	@make -C $(LIBFT_DIR)
-	@echo "$(GREEN)✓ libft compiled!$(RESET)"
-
 # Clean obj files
 clean:
 	@echo "$(RED)Cleaning object files...$(RESET)"
 	@rm -rf $(OBJ_DIR)
-	@make -C $(LIBFT_DIR) clean
 	@echo "$(GREEN)✓ Object files cleaned!$(RESET)"
 
 # Complete clean
 fclean: clean
 	@echo "$(RED)Cleaning executables...$(RESET)"
 	@rm -f $(NAME)
-	@make -C $(LIBFT_DIR) fclean
 	@echo "$(GREEN)✓ Full clean completed!$(RESET)"
 
 # Complete recompilation

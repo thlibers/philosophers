@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:44 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/19 12:38:41 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/23 13:14:56 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 static bool	check_philo_dead(t_table *table)
 {
 	int	i;
-
 	i = 0;
 	while (i < table->nb_philos)
 	{
-		if (get_mstime() - table->philos[i].last_meal_time > table->time_to_die)
+		if (table->philos[i].last_meal_time != 0 && 
+			get_mstime() - table->philos[i].last_meal_time > table->time_to_die)
 		{
 			pthread_mutex_lock(table->death_mutex);
 			table->is_dead = true;
 			pthread_mutex_unlock(table->death_mutex);
 			pthread_mutex_lock(table->print_mutex);
-			printf("%d %d died\n", get_mstime() - table->start_time,
+			printf("%ld %d died\n", get_mstime() - table->start_time,
 				table->philos[i].id);
 			pthread_mutex_unlock(table->print_mutex);
 			return (true);
@@ -49,7 +49,7 @@ static bool	check_all_ate(t_table *table)
 		i++;
 	}
 	pthread_mutex_lock(table->death_mutex);
-	*table->shut_up = true;
+	table->shut_up = true;
 	pthread_mutex_unlock(table->death_mutex);
 	return (true);
 }
