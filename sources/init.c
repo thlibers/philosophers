@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:40 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/23 13:14:05 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:44:53 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	assign_forks(t_philo *philo, t_table *table, int i)
 	}
 }
 
-static void	init_philos(t_table *table)
+static bool	init_philos(t_table *table)
 {
 	int	i;
 
@@ -63,35 +63,44 @@ static void	init_philos(t_table *table)
 		table->philos[i].meals_eaten = 0;
 		table->philos[i].last_meal_time = 0;
 		table->philos[i].table = table;
+		table->philos[i].last_eat = malloc(sizeof(pthread_mutex_t));
+		table->philos[i].nb_eaten = malloc(sizeof(pthread_mutex_t));
+		if (!table->philos[i].last_eat || !table->philos[i].nb_eaten)
+			return (false);
+		if (pthread_mutex_init(table->philos[i].last_eat, NULL)
+			|| pthread_mutex_init(table->philos[i].nb_eaten, NULL))
+			return (false);
 		assign_forks(&table->philos[i], table, i);
 		i++;
 	}
+	return (true);
 }
 
 bool	init_table(t_table *table)
 {
-	table->is_dead = false;
 	table->start_time = 0;
+	table->done = 0;
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->nb_philos);
 	table->philos = malloc(sizeof(t_philo) * table->nb_philos);
 	table->print_mutex = malloc(sizeof(pthread_mutex_t));
-	table->death_mutex = malloc(sizeof(pthread_mutex_t));
+	table->done_mutex = malloc(sizeof(pthread_mutex_t));
+	table->shutup_mutex = malloc(sizeof(pthread_mutex_t));
 	if (!table->forks || !table->philos || !table->print_mutex
-		|| !table->death_mutex)
+		|| !table->done_mutex || !table->shutup_mutex)
 		return (false);
 	if (pthread_mutex_init(table->print_mutex, NULL))
 		return (false);
-	if (pthread_mutex_init(table->death_mutex, NULL))
-	{
-		pthread_mutex_destroy(table->print_mutex);
-		return (false);
-	}
+	if (pthread_mutex_init(table->done_mutex, NULL)
+		|| pthread_mutex_init(table->shutup_mutex, NULL))
+		return (pthread_mutex_destroy(table->print_mutex), false);
 	if (!init_forks(table))
 	{
 		pthread_mutex_destroy(table->print_mutex);
-		pthread_mutex_destroy(table->death_mutex);
+		pthread_mutex_destroy(table->done_mutex);
+		pthread_mutex_destroy(table->shutup_mutex);
 		return (false);
 	}
-	init_philos(table);
+	if (!init_philos(table))
+		return (false);
 	return (true);
 }

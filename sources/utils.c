@@ -6,7 +6,7 @@
 /*   By: thlibers <thlibers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 13:34:53 by thlibers          #+#    #+#             */
-/*   Updated: 2026/03/23 15:55:07 by thlibers         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:43:48 by thlibers         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,14 @@ long	ft_atol(const char *nptr)
 void	safe_print(t_table *table, char *str, int nb)
 {
 	long	elapsed;
-	
-	pthread_mutex_lock(table->print_mutex);
-	if (table->shut_up)
-	{
-		pthread_mutex_unlock(table->print_mutex);
+	bool	should_print;
+
+	pthread_mutex_lock(table->shutup_mutex);
+	should_print = !table->shut_up;
+	pthread_mutex_unlock(table->shutup_mutex);
+	if (!should_print)
 		return ;
-	}
+	pthread_mutex_lock(table->print_mutex);
 	elapsed = get_mstime() - table->start_time;
 	printf("%ld %d %s\n", elapsed, nb, str);
 	pthread_mutex_unlock(table->print_mutex);
@@ -52,14 +53,6 @@ long	get_mstime(void)
 	gettimeofday(&time, NULL);
 	ms = (time.tv_sec * 1000 + time.tv_usec / 1000);
 	return (ms);
-}
-
-bool	check_die(t_table *table)
-{
-	pthread_mutex_lock(table->death_mutex);
-	if (table->is_dead == true)
-		return (pthread_mutex_unlock(table->death_mutex), true);
-	return (pthread_mutex_unlock(table->death_mutex), false);
 }
 
 bool	check_done(t_philo *philo)
